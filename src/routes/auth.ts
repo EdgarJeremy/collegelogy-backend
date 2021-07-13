@@ -1,5 +1,5 @@
 import express from 'express';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import ModelFactoryInterface from '../models/typings/ModelFactoryInterface';
 import { Routes, ObjectKeyValue } from './typings/RouteInterface';
 import { OkResponse } from './typings/BodyBuilderInterface';
