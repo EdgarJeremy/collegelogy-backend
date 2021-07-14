@@ -16,14 +16,15 @@ export class PlagiarismChecker {
                 due_date: { $lte: now }
             }
         });
+        if (tasks.length) {
+            console.log(`Checking plagiarism in ${tasks.length} task(s)`);
+        }
         for (let i = 0; i < tasks.length; i++) {
             const task = tasks[i];
             const documents = await task.getDocuments();
-            console.log(documents.map((d) => d.participant_id));
             for (let j = 0; j < documents.length; j++) {
                 const document = documents[j];
                 const otherDocuments = documents.filter((d) => d.id !== document.id);
-                console.log('For : ', document.participant_id);
                 for (let t = 0; t < otherDocuments.length; t++) {
                     const a = document;
                     const b = otherDocuments[t];
@@ -35,7 +36,6 @@ export class PlagiarismChecker {
                         percentage,
                         task_id: task.id
                     });
-                    console.log(`${a.participant_id} --> ${b.participant_id} = ${rabinKarp.getPercentage()}`);
                 }
             }
             await task.update({ checked: true });

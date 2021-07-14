@@ -66,10 +66,13 @@ const documentsRoute: Routes = (
 				const tempDir = path.resolve(app.get('ROOT_DIR'), 'temp');
 				const name = 'temp_doc_' + (new Date()).getTime() + '.' + ext;
 				const tempFile = path.resolve(tempDir, name);
-				fs.writeFileSync(tempFile, Buffer.from(data.file, 'base64'));
+				const file = Buffer.from(data.file, 'base64');
+				fs.writeFileSync(tempFile, file);
 
 				const content = await reader.getText(tempFile);
 				data.content = content.trim();
+				// @ts-ignore
+				data.file = file;
 
 				fs.unlinkSync(tempFile);
 

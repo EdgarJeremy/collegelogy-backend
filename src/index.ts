@@ -8,6 +8,7 @@ import path from 'path';
 import http from 'http';
 import socketio from 'socket.io';
 import _ from 'lodash';
+import fs from 'fs';
 
 import ModelFactoryInterface from './models/typings/ModelFactoryInterface';
 import createModels from './models';
@@ -15,6 +16,8 @@ import createRoutes, { SiriusRouter } from './routes';
 import tokenMiddleware from './middlewares/pipes/token';
 import websocket from './websocket';
 import { PlagiarismChecker } from './helpers/PlagiarismChecker';
+import a from './middlewares/wrapper/a';
+import NotFoundError from './classes/NotFoundError';
 
 /** import .env file configuration */
 dotenv.config();
@@ -92,11 +95,42 @@ app.get(
 	},
 );
 
+app.get(
+	'/document/:id',
+	a(
+		async (req: express.Request, res: express.Response) => {
+			const { id } = req.params;
+			const document = await models.Document.findByPk(id);
+			if (!document) throw new NotFoundError('Dokumen tidak ditemukan');
+
+
+			const sp = document.name.split('.');
+			const ext = sp[sp.length - 1];
+			const tempDir = path.resolve(app.get('ROOT_DIR'), 'temp');
+			const name = document.name + '_' + (new Date()).getTime() + '.' + ext;
+			const tempFile = path.resolve(tempDir, name);
+			fs.writeFileSync(tempFile, document.file);
+
+			res.download(tempFile, () => {
+				fs.unlinkSync(tempFile);
+			});
+		}
+	)
+)
+
 /** root route */
 if (process.env.NODE_ENV === 'development') {
 	app.use(express.static(path.resolve(__dirname, '..', 'inspector')));
 } else {
 	app.use(express.static(path.resolve(__dirname, '..', 'frontend')));
+}
+
+
+
+const checker = async () => {
+	const c = new PlagiarismChecker(models);
+	await c.check();
+	setTimeout(checker, 5000);
 }
 
 /** sync models & start server */
@@ -107,12 +141,11 @@ models.sequelize
 	})
 	.then(
 		(): void => {
-			const checker = new PlagiarismChecker(models);
-			checker.check();
 			web.listen(
 				process.env.PORT || 1234,
 				(): void => {
 					console.log('App running');
+					checker();
 				},
 			);
 		},
