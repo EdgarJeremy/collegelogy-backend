@@ -107,7 +107,7 @@ app.get(
 			const sp = document.name.split('.');
 			const ext = sp[sp.length - 1];
 			const tempDir = path.resolve(app.get('ROOT_DIR'), 'temp');
-			const name = document.name + '_' + (new Date()).getTime() + '.' + ext;
+			const name = document.name.split('.')[0] + '_' + (new Date()).getTime() + '.' + ext;
 			const tempFile = path.resolve(tempDir, name);
 			fs.writeFileSync(tempFile, document.file);
 
