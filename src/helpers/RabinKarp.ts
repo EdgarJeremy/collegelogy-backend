@@ -1,8 +1,14 @@
+// @ts-ignore
+import stopwords from 'stopwords-id';
+
+const sastrawijs = require('sastrawijs');
+console.log(sastrawijs);
+
 export class RabinKarp {
     private txt1?: string;
     private txt2?: string;
 
-    private gram: number = 3;
+    private gram: number = 5;
     private base: number = 13;
 
     constructor(txt1: string, txt2: string) {
@@ -13,11 +19,11 @@ export class RabinKarp {
     getPercentage() {
         const { txt1, txt2 } = this;
         const pText1 = this.preprocess(txt1!);
-        const tText1 = this.tokenize(pText1);
+        const tText1 = this.gramTokenize(pText1);
         const hText1 = tText1.map((t) => this.hash(t, pText1.length, this.base));
 
         const pText2 = this.preprocess(txt2!);
-        const tText2 = this.tokenize(pText2);
+        const tText2 = this.gramTokenize(pText2);
         const hText2 = tText2.map((t) => this.hash(t, pText2.length, this.base));
 
         let same = 0;
@@ -33,10 +39,28 @@ export class RabinKarp {
     }
 
     private preprocess(txt: string) {
-        return txt.replace(/[^a-zA-Z]/g, '').trim().toLowerCase();
+        const pure = txt.replace(/[^a-zA-Z ]/g, '').replace(/\s\s+/g, ' ').trim().toLowerCase();
+        const tokenized = this.preTokenize(pure);
+        const mainWords = this.removeStopwords(tokenized);
+        const baseWords = this.stem(mainWords);
+        const preprocessed = baseWords.join('');
+        return preprocessed;
     }
 
-    private tokenize(txt: string) {
+    private preTokenize(txt: string): string[] {
+        return txt.split(' ');
+    }
+
+    private removeStopwords(words: string[]): string[] {
+        return words.filter((w) => stopwords.indexOf(w) === -1);
+    }
+
+    private stem(words: string[]): string[] {
+        const stemmer = new sastrawijs.Stemmer();
+        return words.map((w) => stemmer.stem(w));
+    }
+
+    private gramTokenize(txt: string) {
         const n = txt.length;
         const splitted = [];
         if (n < this.gram) {

@@ -2639,6 +2639,11 @@ safe-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
+sastrawijs@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/sastrawijs/-/sastrawijs-1.0.4.tgz#3bbf92c0b4e211b4a1b419009ed544d83cad1591"
+  integrity sha512-bH342m3UgDWGKcUxGI0Q8A4TUTVNb1KMSVBcpz4RvPKtnVoi490/5dkRvUY+I3r7Vqf4f8T4pJKoFdxPe7usQw==
+
 sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
@@ -2922,6 +2927,11 @@ static-extend@^0.1.1:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
+
+stopwords-id@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/stopwords-id/-/stopwords-id-0.2.0.tgz#f9ea2fd58c782078d4913246f5c6c9dc4acf014b"
+  integrity sha1-+eov1Yx4IHjUkTJG9cbJ3ErPAUs=
 
 stream-combiner@^0.2.2:
   version "0.2.2"

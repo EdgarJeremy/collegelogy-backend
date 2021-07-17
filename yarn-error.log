@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add @types/any-text
+  /usr/local/bin/node /usr/local/bin/yarn add @types/sastrawijs
 
 PATH: 
   /usr/local/opt/mysql@5.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/opt/X11/bin:/usr/local/opt/mysql@5.7/bin:~/Documents/flutter/bin:/Users/edgar/Library/Android/sdk/emulator:/Users/edgar/Library/Android/sdk/tools:/Users/edgar/Library/Android/sdk/tools/bin:/Users/edgar/Library/Android/sdk/platform-tools:~/Documents/flutter/bin:/Users/edgar/Library/Android/sdk/emulator:/Users/edgar/Library/Android/sdk/tools:/Users/edgar/Library/Android/sdk/tools/bin:/Users/edgar/Library/Android/sdk/platform-tools
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fany-text: Not found
+  Error: https://registry.yarnpkg.com/@types%2fsastrawijs: Not found
       at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66988:18)
       at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140662:22)
       at Request.emit (events.js:314:20)
@@ -47,10 +47,11 @@ npm manifest:
     "author": "",
     "license": "ISC",
     "dependencies": {
+      "@types/bcryptjs": "^2.4.2",
       "@types/pdf-parse": "^1.1.1",
       "@types/randomatic": "^3.1.2",
       "any-text": "^1.2.0",
-      "bcrypt": "3.0.6",
+      "bcryptjs": "^2.4.3",
       "body-parser": "^1.18.3",
       "chalk": "^2.4.1",
       "cors": "^2.8.5",
@@ -69,12 +70,14 @@ npm manifest:
       "pluralize": "^8.0.0",
       "randomatic": "^3.1.1",
       "randomize": "^0.0.4",
+      "sastrawijs": "^1.0.4",
       "sequelize": "^4.41.2",
       "socket.io": "^2.2.0",
+      "stopwords-id": "^0.2.0",
       "typescript": "^3.2.1"
     },
     "devDependencies": {
-      "@types/bcrypt": "^3.0.0",
+      "@types/bcrypt": "^5.0.0",
       "@types/cors": "^2.8.4",
       "@types/dotenv": "^6.1.0",
       "@types/express": "^4.16.0",
@@ -116,10 +119,17 @@ Lockfile:
       esutils "^2.0.2"
       js-tokens "^4.0.0"
   
-  "@types/bcrypt@^3.0.0":
-    version "3.0.0"
-    resolved "https://registry.yarnpkg.com/@types/bcrypt/-/bcrypt-3.0.0.tgz#851489a9065a067cb7f3c9cbe4ce9bed8bba0876"
-    integrity sha512-nohgNyv+1ViVcubKBh0+XiNJ3dO8nYu///9aJ4cgSqv70gBL+94SNy/iC2NLzKPT2Zt/QavrOkBVbZRLZmw6NQ==
+  "@types/bcrypt@^5.0.0":
+    version "5.0.0"
+    resolved "https://registry.yarnpkg.com/@types/bcrypt/-/bcrypt-5.0.0.tgz#a835afa2882d165aff5690893db314eaa98b9f20"
+    integrity sha512-agtcFKaruL8TmcvqbndlqHPSJgsolhf/qPWchFlgnW1gECTN/nKbFcoFnvKAQRFfKbh+BO6A3SWdJu9t+xF3Lw==
+    dependencies:
+      "@types/node" "*"
+  
+  "@types/bcryptjs@^2.4.2":
+    version "2.4.2"
+    resolved "https://registry.yarnpkg.com/@types/bcryptjs/-/bcryptjs-2.4.2.tgz#e3530eac9dd136bfdfb0e43df2c4c5ce1f77dfae"
+    integrity sha512-LiMQ6EOPob/4yUL66SZzu6Yh77cbzJFYll+ZfaPiPPFswtIlA/Fs1MzdKYA7JApHU49zQTbJGX3PDmCpIdDBRQ==
   
   "@types/bluebird@*":
     version "3.5.29"
@@ -481,13 +491,10 @@ Lockfile:
       mixin-deep "^1.2.0"
       pascalcase "^0.1.1"
   
-  bcrypt@3.0.6:
-    version "3.0.6"
-    resolved "https://registry.yarnpkg.com/bcrypt/-/bcrypt-3.0.6.tgz#f607846df62d27e60d5e795612c4f67d70206eb2"
-    integrity sha512-taA5bCTfXe7FUjKroKky9EXpdhkVvhE5owfxfLYodbrAR1Ul3juLmIQmIQBK4L9a5BuUcE6cqmwT+Da20lF9tg==
-    dependencies:
-      nan "2.13.2"
-      node-pre-gyp "0.12.0"
+  bcryptjs@^2.4.3:
+    version "2.4.3"
+    resolved "https://registry.yarnpkg.com/bcryptjs/-/bcryptjs-2.4.3.tgz#9ab5627b93e60621ff7cdac5da9733027df1d0cb"
+    integrity sha1-mrVie5PmBiH/fNrF2pczAn3x0Ms=
   
   better-assert@~1.0.0:
     version "1.0.2"
@@ -2124,11 +2131,6 @@ Lockfile:
     dependencies:
       lru-cache "^4.1.3"
   
-  nan@2.13.2:
-    version "2.13.2"
-    resolved "https://registry.yarnpkg.com/nan/-/nan-2.13.2.tgz#f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7"
-    integrity sha512-TghvYc72wlMGMVMluVo9WRJc0mB8KxxF/gZ4YYFy7V2ZQX9l7rgbPg7vjS9mt6U5HXODVFVI2bOduCzwOMv/lw==
-  
   nan@^2.12.1:
     version "2.14.0"
     resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
@@ -2175,7 +2177,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/node-ensure/-/node-ensure-0.0.0.tgz#ecae764150de99861ec5c810fd5d096b183932a7"
     integrity sha1-7K52QVDemYYexcgQ/V0Jaxg5Mqc=
   
-  node-pre-gyp@0.12.0, node-pre-gyp@^0.12.0:
+  node-pre-gyp@^0.12.0:
     version "0.12.0"
     resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.12.0.tgz#39ba4bb1439da030295f899e3b520b7785766149"
     integrity sha512-4KghwV8vH5k+g2ylT+sLTjy5wmUOb9vPhnM8NHvRf9dHmnW/CndrFXy2aRPaPST6dugXSdHXfeaHQm77PIz/1A==
@@ -2738,6 +2740,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
     integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
   
+  sastrawijs@^1.0.4:
+    version "1.0.4"
+    resolved "https://registry.yarnpkg.com/sastrawijs/-/sastrawijs-1.0.4.tgz#3bbf92c0b4e211b4a1b419009ed544d83cad1591"
+    integrity sha512-bH342m3UgDWGKcUxGI0Q8A4TUTVNb1KMSVBcpz4RvPKtnVoi490/5dkRvUY+I3r7Vqf4f8T4pJKoFdxPe7usQw==
+  
   sax@^1.2.4:
     version "1.2.4"
     resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
@@ -3021,6 +3028,11 @@ Lockfile:
     version "1.5.0"
     resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
     integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
+  
+  stopwords-id@^0.2.0:
+    version "0.2.0"
+    resolved "https://registry.yarnpkg.com/stopwords-id/-/stopwords-id-0.2.0.tgz#f9ea2fd58c782078d4913246f5c6c9dc4acf014b"
+    integrity sha1-+eov1Yx4IHjUkTJG9cbJ3ErPAUs=
   
   stream-combiner@^0.2.2:
     version "0.2.2"
