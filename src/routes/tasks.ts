@@ -1,6 +1,6 @@
 import express from 'express';
-// @ts-ignore
-import randomize from 'randomize';
+import path from 'path';
+import fs from 'fs';
 import ModelFactoryInterface from '../models/typings/ModelFactoryInterface';
 import { Routes } from './typings/RouteInterface';
 import a from '../middlewares/wrapper/a';
@@ -11,6 +11,7 @@ import { PaginatedResult } from './typings/QueryInterface';
 import sequelize from 'sequelize';
 import { Parser } from '../helpers/Parser';
 import onlyAuth from '../middlewares/protector/auth';
+import SiriusError from '../classes/SiriusError';
 
 const tasksRoute: Routes = (
 	app: express.Application,
@@ -30,7 +31,7 @@ const tasksRoute: Routes = (
 					models,
 				);
 				parsed.distinct = true;
-				parsed.attributes = ['id', 'name', 'description', 'due_date'];
+				parsed.attributes = ['id', 'name', 'description', 'due_date', 'filename', [models.Sequelize.literal('CASE WHEN task.file IS NULL THEN false ELSE true END'), 'hasFile']];
 				if (req.user.type === 'student') {
 					parsed.include = [...parsed.include!, {
 						attributes: ['id'],
@@ -76,6 +77,27 @@ const tasksRoute: Routes = (
 		a(
 			async (req: express.Request, res: express.Response): Promise<void> => {
 				const data: TaskAttributes = req.body;
+
+				if (data.file) {
+					// @ts-ignore
+					const sp = data.file.name.split('.');
+					const ext: string = sp[sp.length - 1];
+					if (['jpg', 'jpeg', 'png', 'bmp', 'pdf', 'docx'].indexOf(ext) === -1) throw new SiriusError('Format tidak didukung');
+					const tempDir = path.resolve(app.get('ROOT_DIR'), 'temp');
+					const name = 'temp_doc_' + (new Date()).getTime() + '.' + ext;
+					const tempFile = path.resolve(tempDir, name);
+					// @ts-ignore
+					const file = Buffer.from(data.file.data, 'base64');
+					fs.writeFileSync(tempFile, file);
+
+					// @ts-ignore
+					data.filename = data.file.name;
+					// @ts-ignore
+					data.file = file;
+
+					fs.unlinkSync(tempFile);
+				}
+
 				const task: TaskInstance = await models.Task.create(data);
 				const body: OkResponse = { data: task };
 

@@ -118,6 +118,29 @@ app.get(
 	)
 )
 
+app.get(
+	'/task_document/:id',
+	a(
+		async (req: express.Request, res: express.Response) => {
+			const { id } = req.params;
+			const task = await models.Task.findByPk(id);
+			if (!task) throw new NotFoundError('Task tidak ditemukan');
+
+
+			const sp = task.filename.split('.');
+			const ext = sp[sp.length - 1];
+			const tempDir = path.resolve(app.get('ROOT_DIR'), 'temp');
+			const name = task.filename.split('.')[0] + '_' + (new Date()).getTime() + '.' + ext;
+			const tempFile = path.resolve(tempDir, name);
+			fs.writeFileSync(tempFile, task.file);
+
+			res.download(tempFile, () => {
+				fs.unlinkSync(tempFile);
+			});
+		}
+	)
+)
+
 /** root route */
 if (process.env.NODE_ENV === 'development') {
 	app.use(express.static(path.resolve(__dirname, '..', 'inspector')));

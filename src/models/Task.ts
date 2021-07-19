@@ -9,6 +9,8 @@ export interface TaskAttributes {
     name: string;
     description: string;
     due_date: Date;
+    file: string;
+    filename: string;
     checked: boolean;
     room_id?: number;
     created_at?: Date;
@@ -39,6 +41,14 @@ export const TaskFactory: Factory<TaskInstance, TaskAttributes> = (
         due_date: {
             type: DataTypes.DATE,
             allowNull: false
+        },
+        file: {
+            type: DataTypes.BLOB('long'),
+            allowNull: true
+        },
+        filename: {
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
         checked: {
             type: DataTypes.BOOLEAN,
