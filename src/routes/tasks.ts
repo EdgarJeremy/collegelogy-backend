@@ -12,6 +12,7 @@ import sequelize from 'sequelize';
 import { Parser } from '../helpers/Parser';
 import onlyAuth from '../middlewares/protector/auth';
 import SiriusError from '../classes/SiriusError';
+import AuthError from '../classes/AuthError';
 
 const tasksRoute: Routes = (
 	app: express.Application,
@@ -77,7 +78,18 @@ const tasksRoute: Routes = (
 		a(
 			async (req: express.Request, res: express.Response): Promise<void> => {
 				const data: TaskAttributes = req.body;
-
+				const s = models.Sequelize;
+				const exists = await models.Task.findOne({
+					where: s.and(
+						s.where(
+							s.fn('LOWER', s.col('name')),
+							data.name.toLowerCase()
+						),
+						s.where(s.col('room_id'), data.room_id!)
+					)
+				});
+				if(exists) throw new AuthError('Judul tugas sudah pernah dibuat!');
+				console.log(exists);
 				if (data.file) {
 					// @ts-ignore
 					const sp = data.file.name.split('.');
