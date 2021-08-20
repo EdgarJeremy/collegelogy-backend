@@ -62,7 +62,7 @@ const documentsRoute: Routes = (
 
 				const sp = data.name.split('.');
 				const ext: string = sp[sp.length - 1];
-				if (['pdf', 'docx', 'doc'].indexOf(ext) === -1) throw new SiriusError('Format tidak didukung');
+				if (['pdf', 'docx', 'doc', 'txt', 'xls', 'xlsx'].indexOf(ext) === -1) throw new SiriusError('Format tidak didukung');
 				const tempDir = path.resolve(app.get('ROOT_DIR'), 'temp');
 				const name = 'temp_doc_' + (new Date()).getTime() + '.' + ext;
 				const tempFile = path.resolve(tempDir, name);
