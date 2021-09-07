@@ -21,7 +21,6 @@ const a: A = (handler: express.Handler): express.Handler => {
 			) => {
 				if (err instanceof Sequelize.UniqueConstraintError) {
 					const response: ErrorResponse = { errors: extractErrorResponse(err) };
-					res.status(422);
 					res.json(response);
 				} else if (err instanceof Sequelize.ValidationError) {
 					const response: ErrorResponse = { errors: extractErrorResponse(err) };

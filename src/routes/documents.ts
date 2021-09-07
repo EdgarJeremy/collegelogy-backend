@@ -59,7 +59,6 @@ const documentsRoute: Routes = (
 		a(
 			async (req: express.Request, res: express.Response): Promise<void> => {
 				const data: DocumentAttributes = req.body;
-
 				const sp = data.name.split('.');
 				const ext: string = sp[sp.length - 1];
 				if (['pdf', 'docx', 'doc', 'txt', 'xls', 'xlsx'].indexOf(ext) === -1) throw new SiriusError('Format tidak didukung');
@@ -75,6 +74,13 @@ const documentsRoute: Routes = (
 				data.file = file;
 
 				fs.unlinkSync(tempFile);
+
+				await models.Document.destroy({
+					where: {
+						participant_id: data.participant_id!,
+						task_id: data.task_id!
+					}
+				});
 
 				const document: DocumentInstance = await models.Document.create(data);
 				const body: OkResponse = { data: document };
